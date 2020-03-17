@@ -12,14 +12,23 @@ RUN yum -y install \
     libtool \
     pkgconfig \
     yum-utils \
+	libcurl \
+	libcurl-devel \
     https://centos7.iuscommunity.org/ius-release.rpm
 
 RUN yum -y install \
     python36u \
     python36u-devel \
     python36u-pip \
-    postgresql
-
+    postgresql \
+	postgresql-libs \
+    postgresql-devel \
+	python36u-tkinter 
+	
+RUN yum -y install \
+    krb5-devel	\
+	krb5-workstation
+	
 # Install libpostal
 RUN git clone https://github.com/openvenues/libpostal && \
     cd libpostal && \
@@ -29,7 +38,7 @@ RUN git clone https://github.com/openvenues/libpostal && \
     make install
 
 # Install pypostal
-RUN pip3.6 install postal \
+RUN pip3.6 install --upgrade pip postal \
     happybase \
     pandas \
     jsonschema \
@@ -43,8 +52,44 @@ RUN pip3.6 install postal \
     patsy \
 	six \
 	requests \
+	requests-kerberos \
 	plotly \
-	requests-toolbelt
+	requests-toolbelt \
+	boto \
+	bz2file \
+	cycler \
+	decorator \
+	fpdf \
+	httpretty \
+	imbalanced-learn \
+	ipython-genutils \
+	jupyter-core \
+	lime \
+	mlxtend \
+	nbformat \
+	nose \
+	pathtools \
+	py \
+	py2neo \
+	pyparsing \
+	pytest \
+	python-dateutil \
+	pytz \
+	PyYAML \
+	ruamel.yaml \
+	scikit-learn \
+	seaborn \
+	smart-open \
+	SQLAlchemy \
+	statsmodels \
+	traitlets \
+	XlsxWriter \
+	probablepeople \
+	wordninja \
+	multiprocess 
+	
+	
+RUN pip3.6 install --no-cache-dir --compile --ignore-installed --install-option="--with-nss" pycurl==7.43.0.1	
 
 # Create symlinks for the C objects (so we dont need to set LD_LIBRARY_PATH).
 RUN ln -s /usr/lib/libpostal.a /usr/lib64/libpostal.a
